@@ -8,7 +8,7 @@ public class FileManager {
 
     static public boolean createDatabase() {
         try {
-            File dataStore = new File("userbase.txt");
+            File dataStore = new File("/Users/mindera/IdeaProjects/TerminalCasino/src/userbase.txt");
             if (dataStore.createNewFile()) {
                 System.out.println("No previous database found. Creating a new one.");
                 return true;
@@ -17,7 +17,7 @@ public class FileManager {
                 return false;
             }
         } catch (IOException e) {
-            System.out.println("Something went terribly wrong");
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -40,11 +40,12 @@ public class FileManager {
 
     static public ArrayList<Player> readDatabase() {
         try {
-            File obj = new File("userbase.txt");
+            File obj = new File("/Users/mindera/IdeaProjects/TerminalCasino/src/userbase.txt");
+            System.out.println();
             Scanner reader = new Scanner(obj);
             ArrayList<Player> players = new ArrayList<>();
             while (reader.hasNextLine()) {
-                String line = reader.nextLine();
+                String line = reader.next();
                 line = line.replaceAll("\\[","");
                 line = line.replaceAll("\\]","");
                 String[] splitString = line.split("/");
@@ -54,7 +55,7 @@ public class FileManager {
             reader.close();
             return players;
         } catch (IOException e) {
-            System.out.println("Something went wrong reading previous tasks.");
+            System.out.println("Something went wrong reading database.");
         }
         return null;
     }
