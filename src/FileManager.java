@@ -24,7 +24,8 @@ public class FileManager {
 
     static public boolean writeDatabase(String toWrite) {
         try {
-            FileWriter fw = new FileWriter("userbase.txt",false);
+            File dataStore = new File("/Users/mindera/IdeaProjects/TerminalCasino/src/userbase.txt");
+            FileWriter fw = new FileWriter(dataStore,false);
             toWrite = toWrite.replaceAll("\\[","");
             toWrite = toWrite.replaceAll("]","");
             toWrite = toWrite.replaceAll("," , "\n");
@@ -45,7 +46,7 @@ public class FileManager {
             Scanner reader = new Scanner(obj);
             ArrayList<Player> players = new ArrayList<>();
             while (reader.hasNextLine()) {
-                String line = reader.next();
+                String line = reader.nextLine();
                 line = line.replaceAll("\\[","");
                 line = line.replaceAll("\\]","");
                 String[] splitString = line.split("/");

@@ -1,2 +1,3 @@
 john/doe/100
- smith/poo/100
+  admin/ok/100
+ asd/asd/100

@@ -1,4 +1,2 @@
 john/doe/100
- admin/ok/100
-  d/d/100
-     cumbot/asf/100
+ cu/piroca/100
