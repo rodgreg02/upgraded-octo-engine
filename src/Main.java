@@ -14,7 +14,8 @@ public class Main {
         Player oldPlayer = new Player("", "", 0);
         while (!authentication) {
             System.out.println("1)Register a new account\t\t2)Login\t\t0)Quit :(");
-            switch (scanner.next()) {
+            String input0 = scanner.next();
+            switch (input0) {
                 case "1":
                     scanner.reset();
                     System.out.println("Insert your new username and after Enter, your password:");
@@ -34,9 +35,10 @@ public class Main {
                     }
                 case "2":
                     System.out.println("Insert your username:");
-                    String usernameCheck = scanner.next();
+                    Scanner scanner2 = new Scanner(System.in);
+                    String usernameCheck = scanner2.next();
                     for (int i = 0; i < players.size(); i++) {
-                        String[] login = players.get(i).toString().split("/");
+                        String[] login = players.get(i).toString().trim().split("/");
                         if (usernameCheck.equals(login[0])) {
                             System.out.println("Enter your password:");
                             String passwordCheck = scanner.next();
@@ -64,10 +66,12 @@ public class Main {
         while (!quit) {
             if (authentication) {
                 Splash.displaySplashPage();
+                System.out.println("Welcome back, " + oldPlayer.getUsername() + ", You have " + oldPlayer.getMoney() + " V Bucks");
                 switch (scanner.next()) {
                     case "1":
                         try {
                             oldPlayer.setMoney(Blackjack.play(oldPlayer.getMoney()));
+                            players.set(players.indexOf(oldPlayer),oldPlayer);
                             FileManager.writeDatabase(players.toString().trim());
                         } catch (Exception e) {
                             System.out.println(e.getMessage());
