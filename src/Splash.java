@@ -245,6 +245,7 @@ public class Splash {
 
     static public void displayBlackjack() throws Exception{
         for (int i = 0; i < 6; i++) {
+            Thread.sleep(400);
             System.out.println(Color.CLEAR_CONSOLE);
             System.out.println(Color.GREEN + " /$$$$$$$  /$$        /$$$$$$   /$$$$$$  /$$   /$$    /$$$$$  /$$$$$$   /$$$$$$  /$$   /$$\n" +
                     "| $$__  $$| $$       /$$__  $$ /$$__  $$| $$  /$$/   |__  $$ /$$__  $$ /$$__  $$| $$  /$$/\n" +
@@ -257,7 +258,7 @@ public class Splash {
                     "                                                                                          \n" +
                     "                                                                                          \n" +
                     "                                                                                          " + Color.RESET);
-            Thread.sleep(300);
+            Thread.sleep(400);
             System.out.println(Color.CLEAR_CONSOLE);
             System.out.println(Color.RED + "$$$$$$$\\  $$\\        $$$$$$\\   $$$$$$\\  $$\\   $$\\   $$$$$\\  $$$$$$\\   $$$$$$\\  $$\\   $$\\ \n" +
                     "$$  __$$\\ $$ |      $$  __$$\\ $$  __$$\\ $$ | $$  |  \\__$$ |$$  __$$\\ $$  __$$\\ $$ | $$  |\n" +
@@ -270,7 +271,7 @@ public class Splash {
                     "                                                                                         \n" +
                     "                                                                                         \n" +
                     "                                                                                         " + Color.RESET);
-            Thread.sleep(300);
+            Thread.sleep(400);
             System.out.println(Color.CLEAR_CONSOLE);
             System.out.println(Color.BLUE + " _______   __         ______    ______   __    __    _____   ______    ______   __    __ \n" +
                     "|       \\ |  \\       /      \\  /      \\ |  \\  /  \\  |     \\ /      \\  /      \\ |  \\  /  \\\n" +
@@ -284,7 +285,7 @@ public class Splash {
                     "                                                                                         \n" +
                     "                                                                                         \n" +
                     "                                                                                         " + Color.RESET);
-            Thread.sleep(300);
+            Thread.sleep(400);
             System.out.println(Color.CLEAR_CONSOLE);
             System.out.println(Color.YELLOW + " _______   __         ______    ______   __    __     _____   ______    ______   __    __ \n" +
                     "/       \\ /  |       /      \\  /      \\ /  |  /  |   /     | /      \\  /      \\ /  |  /  |\n" +

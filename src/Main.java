@@ -70,14 +70,11 @@ public class Main {
                 switch (scanner.next()) {
                     case "1":
                         try {
-                            oldPlayer.setMoney(Blackjack.play(oldPlayer.getMoney()));
-                            players.set(players.indexOf(oldPlayer),oldPlayer);
+                            oldPlayer = Blackjack.play(oldPlayer.getMoney(),oldPlayer);
                             FileManager.writeDatabase(players.toString().trim());
                         } catch (Exception e) {
                             System.out.println(e.getMessage());
                         }
-                        break;
-                    case "2":
                         break;
                     case "q":
                         Splash.displayBye();

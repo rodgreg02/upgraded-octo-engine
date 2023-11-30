@@ -40,13 +40,4 @@ public class Player {
         return username + "/" + password + "/" + money;
     }
 
-    static public int checkAces(int numberAces, int score) {
-        if (score > 21) {
-            for (int i = 0; i < numberAces; i++) {
-                score -= 10;
-            }
-            return score;
-        }
-        return score;
-    }
 }

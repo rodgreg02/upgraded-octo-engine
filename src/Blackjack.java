@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Blackjack {
 
 
-    static public int play(int playerMoney) throws Exception {
+    static public Player play(int playerMoney, Player player) throws Exception {
         try {
             Card[] deck = Card.initializeDeck();
             boolean quit = false;
@@ -16,19 +16,20 @@ public class Blackjack {
                 System.out.println("Place your bets: " + "\t\t\t\t\t\t\t\t" + "Available balance: " + playerMoney + " V bucks.\n0) quit");
                 int playerScore = 0;
                 int houseScore = 0;
+                int acesPlayer = 0;
+                int acesHouse = 0;
+                int acesMinusPlayer = 0;
+                int acesMinusHouse = 0;
                 boolean handOver = false;
                 scanner.reset();
                 bet = scanner.nextInt();
                 if (bet == 0) {
-                    return playerMoney;
+                    player.setMoney(playerMoney);
+                    return player;
                 }
                 playerMoney -= bet;
                 Card[] playerHand = new Card[6];
                 Card[] houseHand = new Card[13];
-                int acesMinusPlayer = 0;
-                int acesMinusHouse = 0;
-                int acesPlayer = 0;
-                int acesHouse = 0;
                 playerHand[0] =  Card.getRandomCard(deck);
                 houseHand[0] = Card.getRandomCard(deck);
                 playerHand[1] = Card.getRandomCard(deck);
@@ -97,7 +98,7 @@ public class Blackjack {
                                     hit = true;
                                 }
                                 playerHand[counter] = Card.getRandomCard(deck);
-                                acesPlayer += (playerHand[counter].equals("A") ? 1 : 0);
+                                acesPlayer += (playerHand[counter].value.equals("A") ? 1 : 0);
                                 playerScore += countValue(playerHand[counter], playerScore);
                                 Splash.displayCards(houseHand[0]);
                                 System.out.println("House has: " + houseScore);
@@ -112,6 +113,7 @@ public class Blackjack {
                                 if (!hit) {
                                     System.out.println(Color.CLEAR_CONSOLE);
                                     playerHand[2] = Card.getRandomCard(deck);
+                                    acesPlayer += (playerHand[2].value.equals("A") ? 1 : 0);
                                     playerScore += countValue(playerHand[2], playerScore);
                                     Splash.displayCards(houseHand[0]);
                                     System.out.println("House has: " + houseScore);
@@ -131,10 +133,13 @@ public class Blackjack {
                                 break;
                         }
                         if (playerScore > 21) {
-                            if(acesMinusPlayer != 0) {
-                                playerScore = Player.checkAces(acesPlayer, playerScore);
-                                acesMinusPlayer-= acesPlayer;
+                            for (int i = 0; i < acesPlayer; i++) {
+                                if(acesMinusPlayer != acesPlayer){
+                                    playerScore -= 10;
+                                    acesMinusPlayer++;
+                                }
                             }
+                            if(playerScore < 21 ){break;}
                             Splash.displayBust();
                             Thread.sleep(5000);
                             bust = true;
@@ -153,13 +158,16 @@ public class Blackjack {
                             Splash.displayCards(houseHand[i]);
                             Thread.sleep(1500);
                         }
-                        if(acesMinusHouse != 0) {
-                            houseScore = Player.checkAces(acesHouse, houseScore);
-                            acesMinusHouse -= acesHouse;
-                        }
                         System.out.println("House has: " + houseScore);
 
                         if (houseScore > 21 && !bust) {
+                            for (int i = 0; i < acesHouse; i++) {
+                                if (acesMinusHouse != acesHouse) {
+                                    houseScore -= 10;
+                                    acesMinusHouse++;
+                                }
+                            }
+                            if(houseScore<21){break;}
                             bust = true;
                             Splash.displayWinner();
                             System.out.println(bet * ((double2)?4:2) + " V bucks added to your balance");
@@ -203,7 +211,8 @@ public class Blackjack {
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }
-        return playerMoney;
+        player.setMoney(playerMoney);
+        return player;
     }
 
 
