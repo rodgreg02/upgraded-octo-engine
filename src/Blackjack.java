@@ -12,7 +12,6 @@ public class Blackjack {
             Splash.displayBlackjackLogo();
             Thread.sleep(3500);
             while (!quit) {
-
                 System.out.println(Color.CLEAR_CONSOLE);
                 System.out.println("Place your bets: " + "\t\t\t\t\t\t\t\t" + "Available balance: " + playerMoney + " V bucks.\n0) quit");
                 int playerScore = 0;
@@ -26,7 +25,11 @@ public class Blackjack {
                 playerMoney -= bet;
                 Card[] playerHand = new Card[6];
                 Card[] houseHand = new Card[13];
-                playerHand[0] = Card.getRandomCard(deck);
+                int acesMinusPlayer = 0;
+                int acesMinusHouse = 0;
+                int acesPlayer = 0;
+                int acesHouse = 0;
+                playerHand[0] =  Card.getRandomCard(deck);
                 houseHand[0] = Card.getRandomCard(deck);
                 playerHand[1] = Card.getRandomCard(deck);
                 for (int i = 0; i < 2; i++) {
@@ -47,35 +50,32 @@ public class Blackjack {
                 }
                 System.out.println("Player has: " + playerScore);
                 while (!handOver) {
+                    boolean double2 = false;
                     boolean hit = false;
                     boolean bust = false;
                     scanner.reset();
                     boolean playerMoveDone = false;
                     while (!playerMoveDone) {
-                        if (playerHand[0].value == "A" && (playerHand[1].value == "K" || playerHand[1].value == "Q" || playerHand[1].value == "J" || playerHand[1].value == "10")) {
+                        if (playerHand[0].value.equals("A") && (playerHand[1].value.equals("K") || playerHand[1].value.equals("Q") || playerHand[1].value.equals("J") || playerHand[1].value.equals("10"))) {
                             int counter = 0;
                             for (int i = 0; i < playerHand.length; i++) {
                                 if (playerHand[i] != null) {
                                     counter++;
                                 }
                             }
-                            for (int i = 0; i < counter + 1; i++) {
+                            for (int i = 0; i < counter; i++) {
                                 Splash.displayCards(playerHand[i]);
                             }
                             Thread.sleep(1000);
                             Splash.displayBlackjack();
                             System.out.println(bet * 2.5 + " V Bucks has been awarded to your balance");
+                            Thread.sleep(1500);
                             handOver = true;
+                            bust = true;
                             playerMoney += bet * 2.5;
                             break;
-                        } else if (playerHand[1].value == "A" && (playerHand[0].value == "K" || playerHand[0].value == "Q" || playerHand[0].value == "J" || playerHand[0].value == "10")) {
-                            int counter2 = 0;
-                            for (int i = 0; i < playerHand.length; i++) {
-                                if (playerHand[i] != null) {
-                                    counter2++;
-                                }
-                            }
-                            for (int i = 0; i < counter2 + 1; i++) {
+                        } else if (playerHand[1].value.equals("A") && (playerHand[0].value.equals("K") || playerHand[0].value.equals("Q") || playerHand[0].value.equals("J") || playerHand[0].value.equals("10"))) {
+                            for (int i = 0; i < 2; i++) {
                                 Splash.displayCards(playerHand[i]);
                             }
                             Thread.sleep(1000);
@@ -85,7 +85,7 @@ public class Blackjack {
                             playerMoney += bet * 2.5;
                             break;
                         }
-                        System.out.println("h)hit\t\t\t" + ((hit) ? "" : "d)double") + "\t\t\ts)stand\t\t\t" + (countValue(playerHand[0], 0) == countValue(playerHand[1], 0) ? "2)split" : ""));
+                        System.out.println("h)hit\t\t\t" + ((hit) ? "" : "d)double") + "\t\t\ts)stand\t\t\t");
                         switch (scanner.next()) {
                             case "h":
                                 System.out.println(Color.CLEAR_CONSOLE);
@@ -97,6 +97,7 @@ public class Blackjack {
                                     hit = true;
                                 }
                                 playerHand[counter] = Card.getRandomCard(deck);
+                                acesPlayer += (playerHand[counter].equals("A") ? 1 : 0);
                                 playerScore += countValue(playerHand[counter], playerScore);
                                 Splash.displayCards(houseHand[0]);
                                 System.out.println("House has: " + houseScore);
@@ -106,6 +107,7 @@ public class Blackjack {
                                 System.out.println("Player has: " + playerScore);
                                 break;
                             case "d":
+                                double2 = true;
                                 playerMoney -= bet;
                                 if (!hit) {
                                     System.out.println(Color.CLEAR_CONSOLE);
@@ -119,30 +121,19 @@ public class Blackjack {
                                     System.out.println("Player has: " + playerScore);
                                     playerMoveDone = true;
                                 }
+                                System.out.println(Color.CLEAR_CONSOLE);
                                 break;
                             case "s":
                                 System.out.println(Color.CLEAR_CONSOLE);
                                 playerMoveDone = true;
                                 break;
-                            case "2":
-
                             default:
                                 break;
                         }
                         if (playerScore > 21) {
-                            int counter3 = 0;
-                            int acesInHand = 0;
-                            int acesDeducted = 0;
-                            for (int i = 0; i < playerHand.length; i++) {
-                                if (playerHand[i] != null) {
-                                    counter3++;
-                                }
-                            }
-                            for (int i = 0; i < counter3; i++) {
-                                acesInHand += (playerHand[i].value == "A") ? 1 : 0;
-                            }
-                            if (acesInHand != 0 && acesDeducted != acesInHand) {
-                                playerScore -= 10;
+                            if(acesMinusPlayer != 0) {
+                                playerScore = Player.checkAces(acesPlayer, playerScore);
+                                acesMinusPlayer-= acesPlayer;
                             }
                             Splash.displayBust();
                             Thread.sleep(5000);
@@ -162,14 +153,18 @@ public class Blackjack {
                             Splash.displayCards(houseHand[i]);
                             Thread.sleep(1500);
                         }
+                        if(acesMinusHouse != 0) {
+                            houseScore = Player.checkAces(acesHouse, houseScore);
+                            acesMinusHouse -= acesHouse;
+                        }
                         System.out.println("House has: " + houseScore);
 
                         if (houseScore > 21 && !bust) {
                             bust = true;
                             Splash.displayWinner();
-                            System.out.println(bet * 2 + " V bucks added to your balance");
+                            System.out.println(bet * ((double2)?4:2) + " V bucks added to your balance");
                             Thread.sleep(5000);
-                            playerMoney += bet * 2;
+                            playerMoney += bet * ((double2)?4:2);
                             handOver = true;
                             break;
                         }
@@ -188,7 +183,7 @@ public class Blackjack {
                     if (playerScore > houseScore && !bust) {
                         Splash.displayWinner();
                         System.out.println(bet * 2 + " V bucks added to your balance");
-                        playerMoney += bet * 2;
+                        playerMoney += bet * ((double2)?4:2);
                         handOver = true;
                         Thread.sleep(5000);
                     } else if (houseScore == playerScore && !bust) {
@@ -239,7 +234,7 @@ public class Blackjack {
             case "J":
                 return 10;
             case "A":
-                return (values + 11 > 21) ? 1 : 11;
+                return 11;
         }
         return 0;
     }

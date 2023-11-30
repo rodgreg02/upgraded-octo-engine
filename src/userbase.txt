@@ -1,4 +1,4 @@
-john/doe/100
-            cu/piroca/100
-            ricardo/manel/100
-           daisy/poo/100
+john/doe/10000
+   mary/jane/100
+ jie/lol/100
+ joe/mama/100

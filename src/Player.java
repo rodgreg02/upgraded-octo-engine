@@ -27,7 +27,8 @@ public class Player {
         this.password = password;
         this.money = 100;
     }
-    public Player(String username, String password,int money) {
+
+    public Player(String username, String password, int money) {
         this.username = username;
         this.password = password;
         this.money = money;
@@ -35,8 +36,17 @@ public class Player {
 
     int money;
 
-    public String toString(){
+    public String toString() {
         return username + "/" + password + "/" + money;
     }
 
+    static public int checkAces(int numberAces, int score) {
+        if (score > 21) {
+            for (int i = 0; i < numberAces; i++) {
+                score -= 10;
+            }
+            return score;
+        }
+        return score;
+    }
 }
